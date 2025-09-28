@@ -15,8 +15,34 @@
 ;; ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                         ;;
 ;;-------------------------------------------------------------------------------------------------------------------------------;;
 
-SECTION "Entry point", ROM0[$150]
+include "memory.inc"
 
+
+SECTION "Reset fast calls", ROM0[$0]
+ds 64, 0
+
+
+SECTION "Interrupts", ROM0[$40]
+; vblank
+reti
+ds 7, 0
+
+; LCD
+reti
+ds 7, 0
+
+; Timer
+ds 8, 0
+
+; Serial
+ds 8, 0
+
+; Joypad
+reti
+ds 7, 0
+
+
+SECTION "Entry point", ROM0[$150]
 main::
-   di     ;; Disable Interrupts
-   halt   ;; Halt the CPU (stop procesing here)
+  di
+  halt
