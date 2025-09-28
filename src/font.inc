@@ -1,5 +1,4 @@
 
-DEF FONT_SIZE EQU (16 * 56)
 
 NEWCHARMAP game_font, main
 CHARMAP "A", 1

@@ -1,5 +1,4 @@
 
-DEF ASSETS_SIZE EQU (16 * 11)
 
 SECTION "Assets", ROM0
 assets:
