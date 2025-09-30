@@ -15,40 +15,8 @@
 ;; ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                         ;;
 ;;-------------------------------------------------------------------------------------------------------------------------------;;
 
-include "definitions.inc"
-include "assets.inc"
-include "font.inc"
-
-
-SECTION "RST vector", ROM0[$0]
-ds 64, 0
-
-
-SECTION "Interrupts", ROM0[$40]
-; vblank
-reti
-ds 7, 0
-
-; LCD
-reti
-ds 7, 0
-
-; Timer
-ds 8, 0
-
-; Serial
-ds 8, 0
-
-; Joypad
-reti
-ds 7, 0
-
-
-SECTION "Functions", ROM0
-; PARAM: bc = bytecount, hl = src mem, de = dst vram
-load_vram:
-  ; TODO: config interrupts right here or make a macro and put it
-
+include "definitions/memory.inc"
+include "definitions/assets.inc"
 
 SECTION "Entry point", ROM0[$150]
 main::
