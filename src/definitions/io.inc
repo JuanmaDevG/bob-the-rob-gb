@@ -1,9 +1,21 @@
 if !def(IO_INC)
   def IO_INC
 
-;TODO: better use ldh instead of rBUTTONS
-def rBUTTONS equ $ff00
+;NOTE: starts from $ffxx high memory region
 
+def rIE equ $ff
+def rIF equ $0f
+
+def INTERRUPT_VBLANK equ  %00000001
+def INTERRUPT_LCD equ     %00000010
+def INTERRUPT_TIMER equ   %00000100
+def INTERRUPT_SERIAL equ  %00001000
+def INTERRUPT_JOYPAD equ  %00010000
+
+def rBUTTONS equ $ff00
+def rP1 equ $00         ; For ldh and reg c
+
+def SELECT_NONE equ     %00000000
 def SELECT_BUTTONS equ  %00100000
 def SELECT_JOYPAD equ   %00010000
 

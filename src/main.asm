@@ -22,18 +22,15 @@ include "definitions/param-macros.inc"
 SECTION "Entry point", ROM0[$150]
 main::
   di
-  call config_loadtime
+  call config_game
   Param_bchlde FONT_COUNT, font_data, VRAM_FONT_LOC
   call load_textures
   Param_bchlde ASSET_COUNT, assets, VRAM_ASSETS_LOC
   call load_textures
 
-  ; Add ram region with system bits
-  call config_runtime
   ei
   .game_loop:
     call game_logic
-    call draw_game
   jr .game_loop
   ; Now gameloop with OAM and move bob, collide with bobby
   

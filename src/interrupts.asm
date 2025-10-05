@@ -2,8 +2,8 @@ include "definitions/io.inc"
 
 SECTION "Interrupts", ROM0[$40]
 ; vblank
-reti
-ds 7, 0
+jp draw_game
+ds 5, 0
 
 ; LCD status (STAT HBlank)
 reti
@@ -21,10 +21,16 @@ ds 5, 0
 
 
 SECTION "Interrupt handlers", ROM0
-  ;NOPARAM, USE: hl
+  ;NOPARAM, USE: c
   handle_joypad:
-    ld hl, rBUTTONS
-    ld [hl], SELECT_JOYPAD
-    ld a, [hl]
-    ; TODO: are buttons pressed
+    ld c, rP1
+    ld a, SELECT_JOYPAD
+    ld [c], a
+    ld a, [c]
+    ; TODO: this should just be used for menus
+    reti
+
+
+  ;NOPARAM
+  draw_game:
     reti

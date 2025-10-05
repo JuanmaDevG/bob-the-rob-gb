@@ -12,7 +12,4 @@ def rLY equ $ff44
 def rBGP equ $ff47
 ;def rOBP0 equ $ff48
 
-def rIE equ $ffff
-def rIF equ $ff0f
-
 endc ; MEMORY_INC

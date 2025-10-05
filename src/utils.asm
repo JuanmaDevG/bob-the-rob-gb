@@ -1,19 +1,16 @@
 include "definitions/memory.inc"
 include "definitions/mem-macros.inc"
 include "definitions/sync.inc"
+include "definitions/io.inc"
 
 
 SECTION "Utils", ROM0
-  ;NOPARAM
-  config_loadtime::
-    ld a, %00000001
-    ld [rIE], a
-    ret
-
-  ;NOPARAM
-  config_runtime::
+  ;NOPARAM, USE: c
+  config_game::
+    ld a, INTERRUPT_VBLANK
+    ldh [rIE], a
     ld a, %11100100
-    ld [rBGP] a
+    ldh [rBGP], a
     ret
 
 
@@ -37,13 +34,42 @@ SECTION "Utils", ROM0
     di
     ret
 
+  def INPUT_BIT_DOWN equ    %10000000
+  def INPUT_BIT_UP equ      %01000000
+  def INPUT_BIT_LEFT equ    %00100000
+  def INPUT_BIT_RIGHT equ   %00010000
+  def INPUT_BIT_START equ   %00001000
+  def INPUT_BIT_SELECT equ  %00000100
+  def INPUT_BIT_B equ       %00000010
+  def INPUT_BIT_A equ       %00000001
 
-  ;NOPARAM
-  game_logic::
+  ;NOPARAM, USE: B, RETURN d
+  get_input:
+    ld b, $0f
+    ld c, rP1
+    ld a, SELECT_JOYPAD
+    ld [c], a
+    ld a, [c]
+    ld a, [c]
+    and b
+    ld d, a
+    swap d
+    ld a, SELECT_BUTTONS
+    ld [c], a
+    ld a, [c]
+    ld a, [c]
+    ld a, [c]
+    ld a, [c]
+    ld a, [c]
+    ld a, [c]
+    and b
+    or d
+    ld d, a
     ret
 
   ;NOPARAM
-  draw_game::
-    ei
+  game_logic::
+    call get_input
+    ; TODO: put rob in a position
     halt
     ret
