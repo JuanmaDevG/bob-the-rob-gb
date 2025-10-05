@@ -5,14 +5,13 @@ include "definitions/sync.inc"
 
 SECTION "Utils", ROM0
   ;NOPARAM
-  config_loadtime_interrupts::
+  config_loadtime::
     ld a, %00000001
     ld [rIE], a
     ret
 
-
-  ; NOPARAM
-  config_palette::
+  ;NOPARAM
+  config_runtime::
     ld a, %11100100
     ld [rBGP] a
     ret
