@@ -1,35 +1,50 @@
 include "definitions/memory.inc"
+include "definitions/mem-macros.inc"
+include "definitions/sync.inc"
 
-macro Copy4bhlde
-  ld a, [hl+]
-  ld [de], a
-  inc de
-  ld a, [hl+]
-  ld [de], a
-  inc de
-  ld a, [hl+]
-  ld [de], a
-  inc de
-  ld a, [hl+]
-  ld [de], a
-  inc de
-endm
 
 SECTION "Utils", ROM0
-  ; PARAM: bc = bytecount, hl = src, de = vram dst
-  load_vram::
+  ;NOPARAM
+  config_loadtime_interrupts::
+    ld a, %00000001
+    ld [rIE], a
+    ret
+
+
+  ; NOPARAM
+  config_palette::
+    ld a, %11100100
+    ld [rBGP] a
+    ret
+
+
+  ;PARAM: b = texture count, hl = mem src, de = mem dst, USE c
+  load_textures::
+    xor a
+    cp b
+    jr z, .end
     ei
-    ld a, c
-    cp 16
-    jr nc, .big_block
-    ld a, b
-    cp 0
-    jr nz, .big_block
-  .small_block
-    halt
-    .byte_load
+    .wait_vblank: halt
+    .load_texture:
       ld a, [rLY]
-      
-      ld a, [hl+]
-      ld [de], a
-      inc de
+      cp rLY_VBLANK_END -1
+      jr nc, .wait_vblank
+      Load4b_hlde
+      Load4b_hlde
+      Load4b_hlde
+      Load4b_hlde
+      dec b
+      jr nz, .load_texture
+    di
+    ret
+
+
+  ;NOPARAM
+  game_logic::
+    ret
+
+  ;NOPARAM
+  draw_game::
+    ei
+    halt
+    ret

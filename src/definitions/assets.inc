@@ -2,11 +2,11 @@ if !def(ASSETS_INC)
   def ASSETS_INC
 
 ; Objects
-def OBJECTS_SIZE equ (16 * 11)
-def VRAM_OBJECTS_LOC equ (VRAM_FONT_LOC + FONT_SIZE + 16)
+def ASSET_COUNT equ 11
+def VRAM_ASSETS_LOC equ (VRAM_FONT_LOC + FONT_SIZE + $10)
 
 ; Font
-def FONT_SIZE equ (16 * 56)
+def FONT_COUNT equ 56
 def VRAM_FONT_LOC equ $8010
 
 NEWCHARMAP game_font, main

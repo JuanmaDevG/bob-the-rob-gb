@@ -17,8 +17,24 @@
 
 include "definitions/memory.inc"
 include "definitions/assets.inc"
+include "definitions/param-macros.inc"
 
 SECTION "Entry point", ROM0[$150]
 main::
   di
+  call config_loadtime_interrupts
+  Param_bchlde FONT_COUNT, font_data, VRAM_FONT_LOC
+  call load_textures
+  Param_bchlde ASSET_COUNT, assets, VRAM_ASSETS_LOC
+  call load_textures
+  call config_palette
+
+  ; ADD ram region with bits
+  call config_runtime_interrupts
+  .game_loop:
+    call game_logic
+    call draw_game
+  jr .game_loop
+  ; Now gameloop with OAM and move bob, collide with bobby
+  
   halt
