@@ -1,3 +1,4 @@
+include "definitions/io.inc"
 
 SECTION "Interrupts", ROM0[$40]
 ; vblank
@@ -20,5 +21,10 @@ ds 5, 0
 
 
 SECTION "Interrupt handlers", ROM0
+  ;NOPARAM, USE: hl
   handle_joypad:
+    ld hl, rBUTTONS
+    ld [hl], SELECT_JOYPAD
+    ld a, [hl]
+    ; TODO: are buttons pressed
     reti
