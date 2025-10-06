@@ -15,24 +15,56 @@
 ;; ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                         ;;
 ;;-------------------------------------------------------------------------------------------------------------------------------;;
 
-include "definitions/memory.inc"
-include "definitions/assets.inc"
-include "definitions/param-macros.inc"
+include "definitions.inc"
+
+macro Load4b_hlde
+  ld a, [hl+]
+  ld [de], a
+  inc de
+  ld a, [hl+]
+  ld [de], a
+  inc de
+  ld a, [hl+]
+  ld [de], a
+  inc de
+  ld a, [hl+]
+  ld [de], a
+  inc de
+endm
+
 
 SECTION "Entry point", ROM0[$150]
 main::
   di
-  call config_game
-  Param_bchlde FONT_COUNT, font_data, VRAM_FONT_LOC
-  call load_textures
-  Param_bchlde ASSET_COUNT, assets, VRAM_ASSETS_LOC
-  call load_textures
-
-  ei
-  .game_loop:
-    call game_logic
-  jr .game_loop
-  ; Now gameloop with OAM and move bob, collide with bobby
-  
-  di
+  call load_game
+  .mainloop:
+    call update_logic
+    call draw_game
+  jr .mainloop
   halt
+
+
+;NOPARAM
+wait_vblank:
+  ld a, [$ff44]
+  cp 144
+  jr nc, wait_vblank
+  cp 153
+  jr z, wait_vblank
+  ret
+
+
+load_game:
+  ld hl, font_data
+  ld de, $8010
+  ld b, 56
+  call load_textures
+  ld hl, asset_data
+  ld de, $8010 + (56 * $10)
+  ld b, 11
+  call load_textures
+  ;TODO: clean and activate OAM
+
+
+;PARAM: hl = src mem, de = dst mem, b = texture count, USE: c
+load_textures:
