@@ -72,7 +72,7 @@ CHARMAP " ", 57
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 def ASSET_COUNT equ 11
-def VRAM_ASSETS_LOC equ (VRAM_FONT_LOC + FONT_SIZE + $10)
+def VRAM_ASSETS_LOC equ (VRAM_FONT_LOC + (FONT_CHAR_COUNT +1) * $10)
 
 def VRAM_ASSET_DIALOG equ 58
 def VRAM_ASSET_ROBOT equ 59
@@ -106,6 +106,8 @@ def rSTAT equ $41
 def rLY equ $44
 def rBGP equ $47
 def rOBP0 equ $48
+def rWY equ $4a
+def rWX equ $4b
 def rIE equ $ff
 def rIF equ $0f
 

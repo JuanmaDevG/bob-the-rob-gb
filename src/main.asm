@@ -48,9 +48,9 @@ main::
 wait_vblank:
   ld a, [$ff44]
   cp 144
+  jr c, wait_vblank
+  cp 152
   jr nc, wait_vblank
-  cp 153
-  jr z, wait_vblank
   ret
 
 
@@ -60,11 +60,37 @@ load_game:
   ld b, 56
   call load_textures
   ld hl, asset_data
-  ld de, $8010 + (56 * $10)
+  ld de, $8010 + (57 * $10)
   ld b, 11
   call load_textures
-  ;TODO: clean and activate OAM
+  call clean_oam
 
 
-;PARAM: hl = src mem, de = dst mem, b = texture count, USE: c
+;NOPARAM, USE: hl, b
+clean_oam:
+  ld hl, $fe00
+  xor a
+  ld b, 128
+  .loop:
+    call wait_vblank
+    ld [hl+], a
+    dec b
+    jr nz, .loop
+  ;TODO: look how to activate OAM
+  ret
+
+
+;PARAM: hl = src mem, de = dst mem, b = texture count
 load_textures:
+  ld a, b
+  cp 0
+  jr z, .end
+  .loop:
+    call wait_vblank
+    Load4b_hlde
+    Load4b_hlde
+    Load4b_hlde
+    Load4b_hlde
+    dec b
+    jr nz, .loop
+  .end: ret
