@@ -69,14 +69,82 @@ load_textures::
     jr nz, .loop
   .end: ret
 
+; TODO: next time load with DMA and a ROM struct
 place_assets::
+  ; Bob the rob
   ld hl, $fe00
   ld a, 40
   ld [hl+], a
   ld [hl+], a
-  ld [hl], VRAM_ASSET_ROBOT
+  ld [hl], ASSET_ROBOT
   inc hl
-  ;TODO: flags to zero
+  ld [hl], 0
+  inc hl
   ld [hl], 32
   inc hl
   ld [hl+], a
+  ld [hl], ASSET_HAT
+  inc hl
+  xor a
+  ld [hl+], a
+  ; NPC robot
+  ld [hl], 100
+  inc hl
+  lf [hl], 85
+  inc hl
+  ld [hl], ASSET_DIALOG
+  inc hl
+  ld [hl], 108
+  inc hl
+  ld [hl], 77
+  inc hl
+  ld [hl], ASSET_ROBOT
+  inc hl
+  ld [hl+], a
+
+load_text_window::
+  ld hl, $9da0  ; Enough space for 3 lines of my font
+  ld [hl], ASSET_PLOT_UL
+  inc hl
+  ld a, ASSET_PLOT_U
+  ld b, 18
+  .upper_bar:
+    ld [hl+], a
+    dec b
+    jr nz, .upper_bar
+  ld [hl], ASSET_PLOT_UR
+  ld de, 13     ; Row jump
+  add hl, de
+  ld bc, 19     ; Side jump
+  ld a, 3
+  .side_bars:
+    ld [hl], ASSET_PLOT_L
+    add hl, bc
+    ld [hl], ASSET_PLOT_R
+    add hl, de
+    dec a
+    jr nz, .side_bars
+  ld [hl], ASSET_PLOT_DL
+  inc hl
+  ld b, 18
+  ld a, ASSET_PLOT_D
+  .down_bar:
+    ld [hl+], a
+    dec b
+    jr nz, .down_bar
+  ld [hl], ASSET_PLOT_DR
+  ret
+
+lcd_on::
+  ; LCD PPU on
+  ; window area $9c00
+  ; window disable
+  ; Tile data $8000 - $8fff
+  ; BG area $9800
+  ; Obj size 8x8
+  ; Obj enable
+  ; BG & win enable (if this disabled, only able to display objects no matter)
+  ld a, %11010011
+  ldh [$40], a
+
+;TODO: runtime functions

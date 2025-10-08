@@ -41,3 +41,14 @@ load_game:
   ld b, 11
   call load_textures
   call place_assets
+  call load_text_window
+  call lcd_on
+  ld a, %11100100
+  ldh [$47], a
+  ldh [$48], a
+  ret
+
+update_logic:
+  ; Input system
+  ; Movement system
+  ; Collission with NPC

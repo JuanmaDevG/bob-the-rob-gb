@@ -74,17 +74,17 @@ CHARMAP " ", 57
 def ASSET_COUNT equ 11
 def VRAM_ASSETS_LOC equ (VRAM_FONT_LOC + (FONT_CHAR_COUNT +1) * $10)
 
-def VRAM_ASSET_DIALOG equ 58
-def VRAM_ASSET_ROBOT equ 59
-def VRAM_ASSET_HAT equ 60
-def VRAM_ASSET_PLOT_U equ 61
-def VRAM_ASSET_PLOT_UR equ 62
-def VRAM_ASSET_PLOT_R equ 63
-def VRAM_ASSET_PLOT_DR equ 64
-def VRAM_ASSET_PLOT_D equ 65
-def VRAM_ASSET_PLOT_DL equ 66
-def VRAM_ASSET_PLOT_L equ 67
-def VRAM_ASSET_PLOT_UL equ 68
+def ASSET_DIALOG equ 58
+def ASSET_ROBOT equ 59
+def ASSET_HAT equ 60
+def ASSET_PLOT_U equ 61
+def ASSET_PLOT_UR equ 62
+def ASSET_PLOT_R equ 63
+def ASSET_PLOT_DR equ 64
+def ASSET_PLOT_D equ 65
+def ASSET_PLOT_DL equ 66
+def ASSET_PLOT_L equ 67
+def ASSET_PLOT_UL equ 68
 
 ;;;;;;;;;;;;;;;;;;
 ; Memory regions ;
