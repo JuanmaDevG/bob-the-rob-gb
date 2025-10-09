@@ -49,6 +49,7 @@ load_game:
   ret
 
 update_logic:
+  call get_input
   ret
   ; Input system
   ; Movement system

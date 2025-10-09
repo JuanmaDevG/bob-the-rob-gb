@@ -137,6 +137,7 @@ load_text_window::
   ret
 
 lcd_on::
+  ; NOTE: bits described here
   ; LCD PPU on
   ; window area $9c00
   ; window disable
@@ -148,5 +149,17 @@ lcd_on::
   ld a, %11010011
   ldh [$ff40], a
   ret
+
+;NOPARAM, RETURN: b
+get_input::
+  ld c, $00
+  ld a, SELECT_JOYPAD
+  ld [c], a
+  ld a, [c]
+  ld a, [c]
+  ld a, [c]
+  res 4, a
+  swap a
+  ld b, a
 
 ;TODO: runtime functions
