@@ -44,11 +44,16 @@ load_game:
   call load_text_window
   call lcd_on
   ld a, %11100100
-  ldh [$47], a
-  ldh [$48], a
+  ldh [$ff47], a
+  ldh [$ff48], a
   ret
 
 update_logic:
+  ret
   ; Input system
   ; Movement system
   ; Collission with NPC
+
+draw_game:
+  call wait_vblank
+  ret

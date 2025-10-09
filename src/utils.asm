@@ -19,7 +19,7 @@ endm
 SECTION "Functions", ROM0
 ;NOPARAM
 wait_vblank::
-  ldh a, [$44]
+  ldh a, [$ff44]
   cp 144
   jr c, wait_vblank
   cp 152
@@ -29,14 +29,14 @@ wait_vblank::
 lcd_off::
   call wait_vblank
   xor a
-  ldh [$40], a
+  ldh [$ff40], a
   ret
 
 ;NOPARAM, USE: hl, b
 clean_oam::
   ld hl, $fe00
   xor a
-  ld b, 128
+  ld b, 160
   .loop::
     ld [hl+], a
     dec b
@@ -90,7 +90,7 @@ place_assets::
   ; NPC robot
   ld [hl], 100
   inc hl
-  lf [hl], 85
+  ld [hl], 85
   inc hl
   ld [hl], ASSET_DIALOG
   inc hl
@@ -101,6 +101,7 @@ place_assets::
   ld [hl], ASSET_ROBOT
   inc hl
   ld [hl+], a
+  ret
 
 load_text_window::
   ld hl, $9da0  ; Enough space for 3 lines of my font
@@ -145,6 +146,7 @@ lcd_on::
   ; Obj enable
   ; BG & win enable (if this disabled, only able to display objects no matter)
   ld a, %11010011
-  ldh [$40], a
+  ldh [$ff40], a
+  ret
 
 ;TODO: runtime functions

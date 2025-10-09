@@ -1,5 +1,5 @@
 if !def(DEFINITIONS_INC)
-  def DEFINITIONS_INC
+  def DEFINITIONS_INC equ 1
 
 ;;;;;;;;;;;;;;;;;;;;
 ; Font definitions ;
@@ -90,11 +90,11 @@ def ASSET_PLOT_UL equ 68
 ; Memory regions ;
 ;;;;;;;;;;;;;;;;;;
 
-def WRAM equ $c000
-def OAM equ $fe00
-def VRAM equ $8000
-def SCRN0 equ $9800
-def SCRN1 equ $9c00
+def _WRAM equ $c000
+def _OAM equ $fe00
+def _VRAM equ $8000
+def _SCRN0 equ $9800
+def _SCRN1 equ $9c00
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Hardware registers at $ff?? ;

@@ -1,4 +1,4 @@
-SECTIONS "Assets data", ROM0
+SECTION "Assets data", ROM0
 
 font_data::
 db $00,$00,$18,$18,$24,$24,$42,$42
