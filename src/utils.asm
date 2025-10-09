@@ -15,6 +15,14 @@ macro Load4b_hlde
   inc de
 endm
 
+def INIT_OBJECTS_COUNT equ 4
+SECTION "Init objects", ROM0 ; y, x, obj, flags
+init_objects::
+db 40, 40, ASSET_ROBOT, $00
+db 32, 40, ASSET_HAT, $00
+db 100, 85, ASSET_DIALOG, $00
+db 108, 77, ASSET_ROBOT, $00
+
 
 SECTION "Functions", ROM0
 ;NOPARAM
@@ -69,42 +77,20 @@ load_textures::
     jr nz, .loop
   .end: ret
 
-; TODO: next time load with DMA and a ROM struct
-place_assets::
-  ; Bob the rob
-  ld hl, $fe00
-  ld a, 40
-  ld [hl+], a
-  ld [hl+], a
-  ld [hl], ASSET_ROBOT
-  inc hl
-  ld [hl], 0
-  inc hl
-  ld [hl], 32
-  inc hl
-  ld [hl+], a
-  ld [hl], ASSET_HAT
-  inc hl
-  xor a
-  ld [hl+], a
-  ; NPC robot
-  ld [hl], 100
-  inc hl
-  ld [hl], 85
-  inc hl
-  ld [hl], ASSET_DIALOG
-  inc hl
-  ld [hl], 108
-  inc hl
-  ld [hl], 77
-  inc hl
-  ld [hl], ASSET_ROBOT
-  inc hl
-  ld [hl+], a
+;NOPARAM, USE: hl, de, b
+place_objects::
+  ld hl, init_objects
+  ld de $fe00
+  ld b, INIT_OBJECTS_COUNT
+  .loop:
+    Load4b_hlde
+    dec b
+    jr nz, .loop
   ret
 
+;NOPARAM, USE: hl, de, bc
 load_text_window::
-  ld hl, $9da0  ; Enough space for 3 lines of my font
+  ld hl, $9da0  ; Enough screen space for 3 lines of my font
   ld [hl], ASSET_PLOT_UL
   inc hl
   ld a, ASSET_PLOT_U
@@ -150,16 +136,32 @@ lcd_on::
   ldh [$ff40], a
   ret
 
-;NOPARAM, RETURN: b
+load_default_palette::
+  ld a, %11100100
+  ldh [$ff47], a
+  ldh [$ff48], a
+  ret
+
+;NOPARAM, USE: b, c, RETURN: a
 get_input::
   ld c, $00
-  ld a, SELECT_JOYPAD
+  xor a
+  set BIT_BUTTONS, a
   ld [c], a
   ld a, [c]
   ld a, [c]
   ld a, [c]
   res 4, a
-  swap a
   ld b, a
-
-;TODO: runtime functions
+  swap b
+  xor a
+  set BIT_JOYPAD, a
+  ld [c], a
+  ld a, [c]
+  ld a, [c]
+  ld a, [c]
+  and $0f
+  or b
+  xor a
+  ld [c], a
+  ret

@@ -17,10 +17,16 @@
 
 include "definitions.inc"
 
+def GAMEPLAY_DATA_LOC equ $c000
+
+def BIT_DIALOG_MODE equ 7
+;TODO: define more bits as needed
+
 SECTION "Entry point", ROM0[$150]
 main::
   di
   call load_game
+  call load_gameplay_data
   .mainloop:
     call update_logic
     call draw_game
@@ -40,12 +46,19 @@ load_game:
   ld de, $8010 + (57 * $10)
   ld b, 11
   call load_textures
-  call place_assets
+  call place_objects
   call load_text_window
   call lcd_on
-  ld a, %11100100
-  ldh [$ff47], a
-  ldh [$ff48], a
+  call load_default_palette
+  ret
+
+load_gameplay_data:
+  ld hl, init_objects ;To just retain bob data
+  ld de, $c000
+  xor a
+  ld [de], a          ;General gameplay flags
+  inc de
+  ;TODO: load bob and it's hat
   ret
 
 update_logic:

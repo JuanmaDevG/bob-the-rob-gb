@@ -129,6 +129,9 @@ def SELECT_NONE equ     %00000000
 def SELECT_BUTTONS equ  %00100000
 def SELECT_JOYPAD equ   %00010000
 
+def BIT_BUTTONS equ 5
+def BIT_JOYPAD equ 4
+
 def BUTTON_START equ    %00001000
 def BUTTON_SELECT equ   %00000100
 def BUTTON_B equ        %00000010
@@ -138,6 +141,24 @@ def JOY_DOWN equ    %00001000
 def JOY_UP equ      %00000100
 def JOY_LEFT equ    %00000010
 def JOY_RIGHT equ   %00000001
+
+def INPUT_START equ   %10000000
+def INPUT_SELECT equ  %01000000
+def INPUT_B equ       %00100000
+def INPUT_A equ       %00010000
+def INPUT_DOWN equ    %00001000
+def INPUT_UP equ      %00000100
+def INPUT_LEFT equ    %00000010
+def INPUT_RIGHT equ   %00000001
+
+def INPUT_BIT_START equ 7
+def INPUT_BIT_SELECT equ 6
+def INPUT_BIT_B equ 5
+def INPUT_BIT_A equ 4
+def INPUT_BIT_DOWN equ 3
+def INPUT_BIT_UP equ 2
+def INPUT_BIT_LEFT equ 1
+def INPUT_BIT_RIGHT equ 0
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; values for rLY register ;
