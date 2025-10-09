@@ -1,19 +1,10 @@
 include "definitions.inc"
+include "macros.inc"
 
-macro Load4b_hlde
-  ld a, [hl+]
-  ld [de], a
-  inc de
-  ld a, [hl+]
-  ld [de], a
-  inc de
-  ld a, [hl+]
-  ld [de], a
-  inc de
-  ld a, [hl+]
-  ld [de], a
-  inc de
-endm
+def GAMEPLAY_DATA_LOC equ $c000
+
+def BIT_DIALOG_MODE equ 7
+;TODO: define more bits as needed
 
 def INIT_OBJECTS_COUNT equ 4
 SECTION "Init objects", ROM0 ; y, x, obj, flags
@@ -80,7 +71,7 @@ load_textures::
 ;NOPARAM, USE: hl, de, b
 place_objects::
   ld hl, init_objects
-  ld de $fe00
+  ld de, $fe00
   ld b, INIT_OBJECTS_COUNT
   .loop:
     Load4b_hlde
@@ -142,26 +133,84 @@ load_default_palette::
   ldh [$ff48], a
   ret
 
-;NOPARAM, USE: b, c, RETURN: a
+;NOPARAM, USE: b, c, RETURN: b
+;TODO: change the whole input system and input constants because it does not work
 get_input::
   ld c, $00
   xor a
   set BIT_BUTTONS, a
-  ld [c], a
-  ld a, [c]
-  ld a, [c]
-  ld a, [c]
-  res 4, a
+  ldh [c], a
+  ldh a, [c]
+  ldh a, [c]
+  ldh a, [c]
+  and $0f
   ld b, a
   swap b
   xor a
   set BIT_JOYPAD, a
-  ld [c], a
-  ld a, [c]
-  ld a, [c]
-  ld a, [c]
+  ldh [c], a
+  ldh a, [c]
+  ldh a, [c]
+  ldh a, [c]
   and $0f
   or b
+  ld b, a
   xor a
-  ld [c], a
+  ldh [c], a
+  ret
+
+;PARAM: b = input bits, USE: hl, de, bc
+move_character::
+  ld a, b   ;Param change because we need bc
+  ld hl, GAMEPLAY_DATA_LOC
+  ld de, 4 ;Hat offset
+  .move_down:
+  bit INPUT_BIT_DOWN, a
+  jr nz, .move_up
+  inc [hl]
+  ld b, h
+  ld c, l
+  add hl, de
+  inc [hl]
+  ld h, b
+  ld l, c
+  .move_up:
+  bit INPUT_BIT_UP, a
+  jr nz, .move_left
+  dec [hl]
+  ld b, h
+  ld c, l
+  add hl, de
+  dec [hl]
+  ld h, b
+  ld l, c
+  .move_left:
+  inc hl
+  bit INPUT_BIT_LEFT, a
+  jr nz, .move_right
+  dec [hl]
+  ld b, h
+  ld c, l
+  add hl, de
+  dec [hl]
+  ld h, b
+  ld l, c
+  .move_right:
+  bit INPUT_BIT_RIGHT, a
+  jr nz, .end_moves
+  inc [hl]
+  add hl, de
+  inc [hl]
+  .end_moves:
+  ret
+
+;PARAM: b = input bits, USE: hl, de, bc
+calculate_interactions::
+  ret
+
+update_objects::
+  ld hl, GAMEPLAY_DATA_LOC +1 ;Skip gameplay state flags
+  ld de, $fe00
+  Load4b_hlde
+  Load4b_hlde
   ret

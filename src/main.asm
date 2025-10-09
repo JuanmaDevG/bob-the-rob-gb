@@ -16,23 +16,28 @@
 ;;-------------------------------------------------------------------------------------------------------------------------------;;
 
 include "definitions.inc"
-
-def GAMEPLAY_DATA_LOC equ $c000
-
-def BIT_DIALOG_MODE equ 7
-;TODO: define more bits as needed
+include "macros.inc"
 
 SECTION "Entry point", ROM0[$150]
 main::
   di
-  call load_game
   call load_gameplay_data
+  call load_game
   .mainloop:
     call update_logic
     call draw_game
   jr .mainloop
   halt
 
+load_gameplay_data:
+  ld hl, init_objects ;To just retain bob data
+  ld de, $c000
+  xor a
+  ld [de], a          ;General gameplay flags
+  inc de
+  Load4b_hlde
+  Load4b_hlde
+  ret
 
 load_game:
   call lcd_off
@@ -52,22 +57,13 @@ load_game:
   call load_default_palette
   ret
 
-load_gameplay_data:
-  ld hl, init_objects ;To just retain bob data
-  ld de, $c000
-  xor a
-  ld [de], a          ;General gameplay flags
-  inc de
-  ;TODO: load bob and it's hat
-  ret
-
 update_logic:
   call get_input
+  call move_character
+  call calculate_interactions
   ret
-  ; Input system
-  ; Movement system
-  ; Collission with NPC
 
 draw_game:
   call wait_vblank
+  call update_objects
   ret

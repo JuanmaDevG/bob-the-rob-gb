@@ -125,9 +125,9 @@ def INTERRUPT_JOYPAD equ  %00010000
 ; Values for rP1 register ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-def SELECT_NONE equ     %00000000
-def SELECT_BUTTONS equ  %00100000
-def SELECT_JOYPAD equ   %00010000
+def SELECT_NONE equ     %11111111
+def SELECT_BUTTONS equ  %11011111
+def SELECT_JOYPAD equ   %11101111
 
 def BIT_BUTTONS equ 5
 def BIT_JOYPAD equ 4
