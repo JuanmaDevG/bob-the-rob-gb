@@ -157,6 +157,7 @@ get_input::
   ret
 
 ;PARAM: b = input bits, USE: hl, de, bc
+;TODO: the input system is not ready and some definitions are wrong for the moment, debug this
 move_character::
   ld a, b   ;Param change because we need bc
   ld hl, GAMEPLAY_DATA_LOC
