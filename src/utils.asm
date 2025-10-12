@@ -134,11 +134,9 @@ load_default_palette::
   ret
 
 ;NOPARAM, USE: b, c, RETURN: b
-;TODO: change the whole input system and input constants because it does not work
 get_input::
   ld c, $00
-  xor a
-  set BIT_BUTTONS, a
+  ld a, SELECT_BUTTONS
   ldh [c], a
   ldh a, [c]
   ldh a, [c]
@@ -146,16 +144,15 @@ get_input::
   and $0f
   ld b, a
   swap b
-  xor a
-  set BIT_JOYPAD, a
+  ld a, SELECT_JOYPAD
   ldh [c], a
   ldh a, [c]
   ldh a, [c]
   ldh a, [c]
   and $0f
-  or b
+  or b ;TODO: how to invert all bits of b
   ld b, a
-  xor a
+  ld a, SELECT_NONE
   ldh [c], a
   ret
 
