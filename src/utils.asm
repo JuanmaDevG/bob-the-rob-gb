@@ -141,6 +141,7 @@ get_input::
   ldh a, [c]
   ldh a, [c]
   ldh a, [c]
+  cpl
   and $0f
   ld b, a
   swap b
@@ -149,8 +150,9 @@ get_input::
   ldh a, [c]
   ldh a, [c]
   ldh a, [c]
+  cpl
   and $0f
-  or b ;TODO: how to invert all bits of b
+  or b
   ld b, a
   ld a, SELECT_NONE
   ldh [c], a
@@ -160,11 +162,11 @@ get_input::
 ;TODO: the input system is not ready and some definitions are wrong for the moment, debug this
 move_character::
   ld a, b   ;Param change because we need bc
-  ld hl, GAMEPLAY_DATA_LOC
+  ld hl, GAMEPLAY_DATA_LOC + 1
   ld de, 4 ;Hat offset
   .move_down:
   bit INPUT_BIT_DOWN, a
-  jr nz, .move_up
+  jr z, .move_up
   inc [hl]
   ld b, h
   ld c, l
@@ -174,7 +176,7 @@ move_character::
   ld l, c
   .move_up:
   bit INPUT_BIT_UP, a
-  jr nz, .move_left
+  jr z, .move_left
   dec [hl]
   ld b, h
   ld c, l
@@ -185,7 +187,7 @@ move_character::
   .move_left:
   inc hl
   bit INPUT_BIT_LEFT, a
-  jr nz, .move_right
+  jr z, .move_right
   dec [hl]
   ld b, h
   ld c, l
@@ -195,7 +197,7 @@ move_character::
   ld l, c
   .move_right:
   bit INPUT_BIT_RIGHT, a
-  jr nz, .end_moves
+  jr z, .end_moves
   inc [hl]
   add hl, de
   inc [hl]

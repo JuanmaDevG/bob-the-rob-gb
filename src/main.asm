@@ -31,7 +31,7 @@ main::
 
 load_gameplay_data:
   ld hl, init_objects ;To just retain bob data
-  ld de, $c000
+  ld de, _WRAM
   xor a
   ld [de], a          ;General gameplay flags
   inc de
