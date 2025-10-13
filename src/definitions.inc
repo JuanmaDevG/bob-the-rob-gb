@@ -100,16 +100,16 @@ def _SCRN1 equ $9c00
 ; Hardware registers at $ff?? ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-def rP1 equ $00
-def rLCDC equ $40
-def rSTAT equ $41
-def rLY equ $44
-def rBGP equ $47
-def rOBP0 equ $48
-def rWY equ $4a
-def rWX equ $4b
-def rIE equ $ff
-def rIF equ $0f
+def rP1 equ $ff00
+def rLCDC equ $ff40
+def rSTAT equ $ff41
+def rLY equ $ff44
+def rBGP equ $ff47
+def rOBP0 equ $ff48
+def rWY equ $ff4a
+def rWX equ $ff4b
+def rIE equ $ffff
+def rIF equ $ff0f
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Values for rIE register ;

@@ -66,4 +66,8 @@ update_logic:
 draw_game:
   call wait_vblank
   call update_objects
+  .end_vblank:
+    ld a, [rLY]
+    cp 0
+    jr nz, .end_vblank
   ret
