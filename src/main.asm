@@ -15,6 +15,8 @@
 ;; ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                         ;;
 ;;-------------------------------------------------------------------------------------------------------------------------------;;
 
+; NOTE: this project won't have a dialog system because I'm investing that time on a bigger and better project than this proof of concept
+
 include "definitions.inc"
 include "macros.inc"
 
